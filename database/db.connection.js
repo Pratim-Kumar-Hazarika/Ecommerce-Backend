@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 async function intializeConnectionToDb() {
-  const uri ="mongodb+srv://pratimHazarika:pratimMongoDb@neog-cluster.zwegs.mongodb.net/ecommerce"
+  const uri =process.env.URI
   try{
     await  mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true,useFindAndModify:true})
     console.log("Connection established succesfully");
