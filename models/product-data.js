@@ -21,5 +21,5 @@ const productsFromFaker = [...Array(15)].map((item)=>({
             "Bhai lena hai toh lele warna out of stock hojaunnga"
           ]),
 
-}));
+}))
 module.exports = productsFromFaker ;

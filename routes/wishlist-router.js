@@ -13,5 +13,4 @@ router.param("wishlistId",WihlistController.wishlist_param)
 router.route("/:wishlistId")
 .get(WihlistController.get_single_wishlist_item)
 .delete(WihlistController.delete_wishlist_item)
-
 module.exports = router;

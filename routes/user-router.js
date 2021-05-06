@@ -27,5 +27,4 @@ router.route("/:userId/wishlist")
 .get(UserController.get_user_wishlist)
 .post(UserController.add_item_to_wishlist)
 .delete(UserController.delete_item_from_wishlist )
-
 module.exports = router

@@ -9,5 +9,4 @@ router.param("productId",ProductsController.product_param)
 
 router.route("/:productId") .get(ProductsController.get_single_product)
 
-
 module.exports = router

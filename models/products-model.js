@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-
 const productSchema = new Schema({
   name: String,
   image: String,
@@ -10,7 +9,5 @@ const productSchema = new Schema({
   offer:String,
   description:String
 });
-
 const Product = mongoose.model("Product", productSchema);
-
 module.exports = { Product};

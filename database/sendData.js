@@ -1,5 +1,6 @@
 const productsFromFaker = require("../models/product-data");
 const { Product } = require("../models/products-model");
+
 async function sendDataToDb() {
   try {
     productsFromFaker.forEach(async (product) => {

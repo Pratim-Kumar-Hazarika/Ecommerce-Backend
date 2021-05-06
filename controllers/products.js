@@ -1,6 +1,7 @@
 const { Product } = require("../models/products-model");
 
 
+
 exports.product_param = async (req, res, next, id) => {
   try {
     const product = await Product.findById(id);

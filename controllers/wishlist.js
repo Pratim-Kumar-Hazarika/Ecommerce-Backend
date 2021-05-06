@@ -1,6 +1,4 @@
 const Wishlist = require("../models/wishlist-model");
-
-
 exports.wishlist_param = async(req,res,next,wishlistId)=>{
   try{
     const wishlist = await Wishlist.findById(wishlistId).populate("product");
