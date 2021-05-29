@@ -21,10 +21,38 @@ router.route("/:userId/cart")
 .post(UserController.add_item_to_cart)
 .delete(UserController.delete_item_from_cart)
 
+router.route("/:userId/cart/quantity")
+.post(async (req, res) => {
+  try {
+    const { userId } = req.params; 
+    const {cartId} = req.body;  
+    const {incrementQuantity} = req.body;
+    await User.update({"_id":userId,"cart._id":cartId},{
+      "$set":{
+        "cart.$.quantity":incrementQuantity
+      }
+    }, { upsert: true })
+res.json({ success: true, message: "Product updation successfull" })
+  } catch{
+    res.status(500).json({ success: false, message: "User doesn't have items in cart....." })
+  }
+})
+
 
 ///GET ALL ITEMS OF WISHLIST FOR A USER 
 router.route("/:userId/wishlist")
 .get(UserController.get_user_wishlist)
 .post(UserController.add_item_to_wishlist)
 .delete(UserController.delete_item_from_wishlist )
+
+///USER ADDRESS...
+router.route("/:userId/address")
+  .get(UserController.get_user_address)
+  .post(UserController.add_address_to_user)
+  .delete(UserController.delete_address_of_user)
+
+///UPDATE USER ADDRESS...
+router.route("/:userId/address/update")
+  .post(UserController.update_user_address)
+
 module.exports = router

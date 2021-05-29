@@ -1,4 +1,5 @@
 const  { User } = require("../models/user-model");
+const Address = require("../models/address-model");
 const {extend} = require("lodash")
 
 exports.extract_user_param = async(req,res,next,userId)=>{
@@ -129,5 +130,65 @@ exports.add_item_to_wishlist = async(req,res)=>{ /// ADD ITEM TO WISHLIST FOR A 
    res.json({sucess:true, message:"product is deleted from wishlist"})
   }catch{
     res.status(500).json({sucess:false, message:"product is not deleted from wishlist"})
+  }
+}
+
+exports.get_user_address = async (req, res) => { ///Get address of user..
+  const { userId } = req.params;
+  const user = await Address.findById(userId)
+  res.json({ success: true, user })
+}
+
+exports.add_address_to_user = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const user = await Address.findById(userId)
+    if (user == null) {
+      const NewAddress = new Address({ _id: userId, addresses: [req.body] })
+      const saveAddress = await NewAddress.save()
+      return res.json({ success: true, message: "Address Saved to db...", saveAddress })
+    }
+ const ifAddressTypeExist = user.addresses.find((item)=>item.addressType === req.body.addressType)
+  if(ifAddressTypeExist){
+    return res.status(500).json({message:"Address exist already..."})
+  }
+    await Address.updateOne({ "_id": userId}, { "$addToSet": { "addresses": req.body  }});
+    return res.json({ success: true ,message:"Successfully added address.."})
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Unable to save the address..", errMessage: err.message })
+  }
+}
+
+exports.delete_address_of_user = async(req,res)=>{
+  try{
+  const {userId} = req.params;
+   await Address.updateOne({"_id":userId},{"$pull":{"addresses":{"_id":req.body._id}}} )
+   res.json({success:true, message:"Address deleted sucessfully.."})
+  }catch{
+    res.status(500).json({success:false,address:"address not deleted.."})
+  }
+
+}
+
+exports.update_user_address = async (req, res) => {
+  try {
+    const { _id } = req.body
+    const { userId } = req.params;
+    await Address.update({ "_id": userId, "addresses._id": _id }, {
+      "$set": {
+        "addresses.$.city": req.body.city,
+        "addresses.$.fullName": req.body.fullName,
+        "addresses.$.phone": req.body.phone,
+        "addresses.$.pincode": req.body.pincode,
+        "addresses.$.flatNo": req.body.flatNo,
+        "addresses.$.state": req.body.state,
+        "addresses.$.country": req.body.country,
+        "addresses.$.landmark": req.body.landmark,
+        "addresses.$.addressType":req.body.addressType
+      }
+    }, { upsert: true })
+    res.json({ success: true, message: "Address updation successfull" })
+  } catch{
+    res.status(500).json({ success: false, message: "Error while updating the address..." })
   }
 }
