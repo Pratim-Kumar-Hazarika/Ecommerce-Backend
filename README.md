@@ -1,6 +1,6 @@
 # Ecommerce-Backend
 
-Backend for the ecommerce app Youflix!!
+Backend of my ecommerce app SHOPFLIX : https://shopflix-v1.netlify.app/
 
 # Made using :
   
